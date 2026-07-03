@@ -1,0 +1,12 @@
+title: 党政机关公文格式 (GB/T 9704-2012)
+author: 楚新元
+version: 1.0.0
+quarto-required: ">=1.4.549"
+contributes:
+  formats:
+    docx: 
+      reference-doc: template.docx
+      toc: false
+      knitr: 
+        opts_chunk: 
+          dev: ragg_png

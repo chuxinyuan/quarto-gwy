@@ -1,0 +1,10 @@
+title: "关于推进政务服务数字化改革的请示"
+author: ""  # 非发言稿此处留空
+params:
+  date: "2026年7月3日"
+  salutation: "高新区人民政府:"
+  attachment: "管理办法；实施细则"
+  signature: "高新区人工智能服务中心"
+execute:
+  echo: false
+format: gwy-docx

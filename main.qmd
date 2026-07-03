@@ -1,0 +1,113 @@
+
+```{r}
+# 提取元数据备用
+metadata   = yaml::read_yaml("_quarto.yml")
+author     = metadata$author
+date       = metadata$params$date
+salutation = metadata$params$salutation
+attachment = metadata$params$attachment
+signature  = metadata$params$signature
+```
+
+```{r}
+#| results: "asis"
+# 发言稿署名下方日期
+if (author != "") {
+  cat('::: {custom-style="Author"}\n')
+  cat(sprintf("（%s）", date))
+  cat('\n:::\n')
+}
+```
+
+```{r}
+#| results: "asis"
+# 公文抬头
+if (salutation != "") {
+  # 确保文档抬头后只有一个中文冒号
+  salutation = gsub("[:：]", "", salutation)
+  salutation = paste0(salutation, "：")
+  
+  cat('::: {custom-style="Salutation"}\n')
+  cat(salutation)
+  cat('\n:::\n')
+}
+```
+
+{{< include content.qmd >}}
+
+```{r}
+#| results: "asis"
+# 附件上方空一行
+if (author == "" & attachment != "") cat("&nbsp;")
+```
+
+```{r}
+#| results: "asis"
+# 附件
+format_att = \(att) {
+  if (length(att) == 1) {
+    att_info = paste0("附件：", att[1])
+  } else {
+    # 第一个附件紧跟在“附件：”后面
+    att_info = paste0("附件：1.", att[1])
+    # 后续附件换行，前面用加 6 个空格对齐
+    for (i in 2:length(att)) {
+      chars = paste0(
+        strrep("&emsp;", 3), 
+        sprintf("%d.%s", i, att[i])
+      )
+      att_info = c(att_info, chars)
+    }
+  }
+  return(att_info)
+}
+
+attachment = unlist(strsplit(attachment, split = "[;；]"))
+
+if (author == "" & any(attachment != "")) {
+  cat(format_att(attachment), sep = '\n\n')
+}
+```
+
+```{r}
+#| results: "asis"
+# 落款前空三行
+if (author == "") cat("&nbsp;\n\n&nbsp;\n\n&nbsp;")
+```
+
+```{r}
+#| results: "asis"
+# 发文机关
+if (author == "" & signature != "") {
+  # 计算成文日期前面的空格
+  date_signature_width = systemfonts::string_width(
+    strings = date, 
+    family = "FangSong_GB2312",
+    size = 16
+  )
+  date_signature_space = (27 * 16 - 6 * 16 - date_signature_width) / 8
+  
+  # 计算发文单位前面的空格
+  signature_width = systemfonts::string_width(
+    strings = signature, 
+    family = "FangSong_GB2312",
+    size = 16
+  )
+  signature_space = floor(
+    date_signature_space + 
+    ((date_signature_width - signature_width) / 2) / 8
+  )
+  
+  cat(paste0(strrep("&nbsp;", signature_space * 2), signature))
+}
+```
+
+```{r}
+#| results: "asis"
+# 签发日期
+if (author == "" & signature != "") {
+  cat('::: {custom-style="Signature Date"}\n')
+  cat(date)
+  cat('\n:::\n')
+}
+```
