@@ -30,7 +30,13 @@ quarto use template chuxinyuan/quarto-gwy
 quarto::quarto_use_template("chuxinyuan/quarto-gwy", no_prompt = TRUE)
 ```
 
-开发人员请将整个 `_extensions/gwy` 文件夹复制到您的 Quarto 项目根目录，方便调试。
+## 安装 R 包
+
+```r
+if (!require("systemfonts")) {
+  install.packages("systemfonts")
+}
+```
 
 ## 字体安装
 
