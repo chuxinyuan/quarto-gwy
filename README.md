@@ -18,13 +18,13 @@
 
 ## 安装扩展
 
-- 命令行安装
+- 方式一：命令行安装
 
 ```bash
 quarto use template chuxinyuan/quarto-gwy
 ```
 
-- R 代码安装
+- 方式二：R 代码安装
 
 ```r
 quarto::quarto_use_template("chuxinyuan/quarto-gwy", no_prompt = TRUE)
