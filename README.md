@@ -30,14 +30,6 @@ quarto use template chuxinyuan/quarto-gwy
 quarto::quarto_use_template("chuxinyuan/quarto-gwy", no_prompt = TRUE)
 ```
 
-## 安装 R 包
-
-```r
-if (!require("systemfonts")) {
-  install.packages("systemfonts")
-}
-```
-
 ## 安装字体
 
 开始使用前，请确保系统已安装公文正常显示所需要的字体：

@@ -79,20 +79,25 @@ if (author == "") cat("&nbsp;\n\n&nbsp;\n\n&nbsp;")
 #| results: "asis"
 # 发文机关
 if (author == "" & signature != "") {
+  # 定义一个计算字符串宽度的函数
+  calc_string_width = function(strings, size = 16) {
+    # 计算中文字符（非 ASCII）的数量
+    n_graphemes = nchar(strings)
+    n_ascii = nchar(gsub("[^ -~]", "", strings)) # 仅保留标准英文字符/数字/标点
+    n_chinese = n_graphemes - n_ascii
+    
+    # 权重：1个中文 ≈ 1个单位宽度, 1个英文 ≈ 0.5个单位宽度
+    # 再乘以字号 size 得到近似像素宽度
+    total_units = n_chinese + (n_ascii * 0.5)
+    return(total_units * size)
+  }
+
   # 计算成文日期前面的空格
-  date_signature_width = systemfonts::string_width(
-    strings = date, 
-    family = "FangSong_GB2312",
-    size = 16
-  )
+  date_signature_width = calc_string_width(strings = date)
   date_signature_space = (27 * 16 - 6 * 16 - date_signature_width) / 8
   
   # 计算发文单位前面的空格
-  signature_width = systemfonts::string_width(
-    strings = signature, 
-    family = "FangSong_GB2312",
-    size = 16
-  )
+  signature_width = calc_string_width(strings = signature)
   signature_space = floor(
     date_signature_space + 
     ((date_signature_width - signature_width) / 2) / 8
